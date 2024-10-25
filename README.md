@@ -131,3 +131,10 @@ playwright.report` - set rules in `.prettiercc.json`
     }
     Sprawia, ze uzywamy tylko pojedynczych cudzyslowiow
     ```
+
+  - Trace Viewer - można dodać w pliku playwright.config.ts opcje, do analizy testów
+  ```
+  w opcji use np.
+    trace: 'retain-on-failure', // mozna zmienic na 'on' to bedzie dzialac dla wszystkich a nie tylko failed
+    video: 'retain-on-failure', // opcja dodaje video w raporcie gdy niepowodzenie
+  ```

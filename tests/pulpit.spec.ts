@@ -33,20 +33,29 @@ test.describe('Pulpit tests', () => {
   });
 
   test('successful mobile top-up', async ({ page }) => {
-    await page.goto('https://demo-bank.vercel.app/');
-    await page.getByTestId('login-input').fill('testerlo');
-    await page.getByTestId('password-input').fill('12345678');
+    //Arrange
+    const url = 'https://demo-bank.vercel.app/';
+    const user_id = 'testerlo';
+    const user_password = '12345678';
+    const phone_option = '503 xxx xxx';
+    const user_amount = '20';
+
+    //Action
+    await page.goto(url);
+    await page.getByTestId('login-input').fill(user_id);
+    await page.getByTestId('password-input').fill(user_password);
     await page.getByTestId('login-button').click();
 
-    await page.locator('#widget_1_topup_receiver').selectOption('503 xxx xxx');
-    await page.locator('#widget_1_topup_amount').fill('20');
+    await page.locator('#widget_1_topup_receiver').selectOption(phone_option);
+    await page.locator('#widget_1_topup_amount').fill(user_amount);
     await page.locator('#uniform-widget_1_topup_agreement span').click();
 
     await page.locator('#execute_phone_btn').click();
     await page.getByTestId('close-button').click();
 
+    //Assert
     await expect(page.locator('#show_messages')).toContainText(
-      'Do�adowanie wykonane! 20,00PLN na numer 503 xxx xxx',
+      `Doładowanie wykonane! ${user_amount},00PLN na numer ${phone_option}`,
     );
   });
   //await expect(page.getByText('Do�adowanie wykonane', { exact: true })).toHaveText('Do�adowanie wykonane');
