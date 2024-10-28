@@ -1,12 +1,11 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Pulpit tests', () => {
-  const user_id = 'testerlo';
   test.beforeEach(async ({ page }) => {
-    const url = 'https://demo-bank.vercel.app/';
+    const user_id = 'testerlo';
     const user_password = '12345678'; // jezeli uzywamy cos tylko w before each, to zmienna tez tu deklarujemy a nie globalnie
-    await page.goto(url);
 
+    await page.goto('/');
     await page.getByTestId('login-input').fill(user_id);
     await page.getByTestId('password-input').fill(user_password);
     await page.getByTestId('login-button').click();
@@ -53,4 +52,29 @@ test.describe('Pulpit tests', () => {
     );
   });
   //await expect(page.getByText('Do�adowanie wykonane', { exact: true })).toHaveText('Do�adowanie wykonane');
+
+  test('correct balance after successful mobile top-up', async ({ page }) => {
+    //Arrange
+    const phone_option = '503 xxx xxx';
+    const user_amount = '20';
+    const expected_message = `Doładowanie wykonane! ${user_amount},00PLN na numer ${phone_option}`;
+    const initial_balance = await page.locator('#money_value').innerText();
+    const expected_balance = Number(initial_balance) - Number(user_amount);
+
+    //Action
+    await page.locator('#widget_1_topup_receiver').selectOption(phone_option);
+    await page.locator('#widget_1_topup_amount').fill(user_amount);
+    await page.locator('#uniform-widget_1_topup_agreement span').click();
+
+    await page.locator('#execute_phone_btn').click();
+    await page.getByTestId('close-button').click();
+
+    //Assert
+    await expect(page.locator('#show_messages')).toContainText(
+      expected_message,
+    );
+    await expect(page.locator('#money_value')).toHaveText(
+      `${expected_balance}`,
+    );
+  });
 });

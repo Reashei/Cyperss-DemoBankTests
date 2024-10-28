@@ -158,3 +158,15 @@ playwright.report` - set rules in `.prettiercc.json`
 
   })
   ```
+
+  Package.json 
+  ```
+  w sekcji scripts {} mozna zmapowac skrypty, np.
+    "scripts": {
+    "test": "npx playwright test"
+  },
+
+  i potem mozna to uruchomic npm run test
+
+  Mozna tez najechac na nazwe testu i dać run, odpali sie wtedy specjalny terminal testowy
+  ```

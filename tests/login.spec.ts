@@ -5,8 +5,7 @@ test.describe('User login to Demobank', () => {
 
   // przed kazdym testem
   test.beforeEach(async ({ page }) => {
-    const url = 'https://demo-bank.vercel.app/';
-    await page.goto(url);
+    await page.goto('/'); // ustawiamy w configu i mozna tak wywolac stronke
     
   });
 
