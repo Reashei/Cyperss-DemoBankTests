@@ -130,6 +130,7 @@ playwright.report` - set rules in `.prettiercc.json`
         "singleQuote": true
     }
     Sprawia, ze uzywamy tylko pojedynczych cudzyslowiow
+    shift + alt + f odpala prettiera na danym pliku
     ```
 
   - Trace Viewer - można dodać w pliku playwright.config.ts opcje, do analizy testów
@@ -137,4 +138,23 @@ playwright.report` - set rules in `.prettiercc.json`
   w opcji use np.
     trace: 'retain-on-failure', // mozna zmienic na 'on' to bedzie dzialac dla wszystkich a nie tylko failed
     video: 'retain-on-failure', // opcja dodaje video w raporcie gdy niepowodzenie
+  ```
+
+  Uruchamianie testów z wybranego pliku
+  ```
+  Powershell
+  npx playwright test tests/login.spec.ts
+
+  Bash (zmienic terminal)
+  npx playwright test tests/login.spec.ts
+  ```
+
+
+  Uruchamianie składni przed każdym testem
+  ```
+    test.beforeEach(async ({ page }) => {
+    await page.goto(url);
+    
+
+  })
   ```

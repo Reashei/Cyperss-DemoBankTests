@@ -3,16 +3,21 @@
 test.describe('User login to Demobank', () => {
   // grupowanie testow
 
+  // przed kazdym testem
+  test.beforeEach(async ({ page }) => {
+    const url = 'https://demo-bank.vercel.app/';
+    await page.goto(url);
+    
+  });
+
   test('successful login with correct credentials', async ({ page }) => {
     // Arrange
-    const url = 'https://demo-bank.vercel.app/';
-    const user_id = 'testerlo';
+    const user_login = 'testerlo';
     const user_password = '12345678';
     const expected_user_name = 'Jan Demobankowy';
 
     // Action
-    await page.goto(url);
-    await page.getByTestId('login-input').fill(user_id);
+    await page.getByTestId('login-input').fill(user_login);
     await page.getByTestId('password-input').fill(user_password);
     await page.getByTestId('login-button').click();
 
@@ -22,12 +27,10 @@ test.describe('User login to Demobank', () => {
 
   test('unsuccessful login with too short username', async ({ page }) => {
     //Arrange
-    const url = 'https://demo-bank.vercel.app/';
     const user_login = 'tester';
     const expected_error_message = 'identyfikator ma min. 8 znaków';
 
     //Act
-    await page.goto(url);
     await page.getByTestId('login-input').fill(user_login);
     await page.getByTestId('password-input').click();
 
@@ -39,13 +42,11 @@ test.describe('User login to Demobank', () => {
 
   test('unsuccessful login with too short password', async ({ page }) => {
     //Arrange
-    const url = 'https://demo-bank.vercel.app/';
     const user_login = 'testerlo';
     const user_password = '1234567';
     const expected_error_message = 'hasło ma min. 8 znaków';
 
     //Act
-    await page.goto(url);
     await page.getByTestId('login-input').fill(user_login);
     await page.getByTestId('password-input').fill(user_password);
     await page.getByTestId('password-input').blur(); // blur sprawia ze wychodzimi z okienka (gubimy focus), akurat tutaj, aby wyswietli feedback z passwordem ze jest za krotkie

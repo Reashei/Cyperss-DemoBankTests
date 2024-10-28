@@ -1,23 +1,25 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Pulpit tests', () => {
+  const user_id = 'testerlo';
+  test.beforeEach(async ({ page }) => {
+    const url = 'https://demo-bank.vercel.app/';
+    const user_password = '12345678'; // jezeli uzywamy cos tylko w before each, to zmienna tez tu deklarujemy a nie globalnie
+    await page.goto(url);
+
+    await page.getByTestId('login-input').fill(user_id);
+    await page.getByTestId('password-input').fill(user_password);
+    await page.getByTestId('login-button').click();
+  });
+
   test('quick payment with correct data', async ({ page }) => {
     // Arrange
-    const url = 'https://demo-bank.vercel.app/';
-    const user_id = 'testerlo';
-    const user_password = '12345678';
-
     const receiver_id = '2';
     const transfer_amount = '120';
     const transfer_title = 'przelew';
     const expected_transfer_receiver = 'Chuck Demobankowy';
 
     // Action
-    await page.goto(url);
-    await page.getByTestId('login-input').fill(user_id);
-    await page.getByTestId('password-input').fill(user_password);
-    await page.getByTestId('login-button').click();
-
     await page.locator('#widget_1_transfer_receiver').selectOption(receiver_id);
     await page.locator('#widget_1_transfer_amount').fill(transfer_amount);
     await page.locator('#widget_1_transfer_title').fill(transfer_title);
@@ -34,18 +36,10 @@ test.describe('Pulpit tests', () => {
 
   test('successful mobile top-up', async ({ page }) => {
     //Arrange
-    const url = 'https://demo-bank.vercel.app/';
-    const user_id = 'testerlo';
-    const user_password = '12345678';
     const phone_option = '503 xxx xxx';
     const user_amount = '20';
 
     //Action
-    await page.goto(url);
-    await page.getByTestId('login-input').fill(user_id);
-    await page.getByTestId('password-input').fill(user_password);
-    await page.getByTestId('login-button').click();
-
     await page.locator('#widget_1_topup_receiver').selectOption(phone_option);
     await page.locator('#widget_1_topup_amount').fill(user_amount);
     await page.locator('#uniform-widget_1_topup_agreement span').click();
