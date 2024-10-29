@@ -1,4 +1,5 @@
 ﻿import { test, expect } from '@playwright/test';
+import { login_data, loginData, user_login } from '../test-data/login.data';
 
 test.describe('User login to Demobank', () => {
   // grupowanie testow
@@ -6,13 +7,12 @@ test.describe('User login to Demobank', () => {
   // przed kazdym testem
   test.beforeEach(async ({ page }) => {
     await page.goto('/'); // ustawiamy w configu i mozna tak wywolac stronke
-    
   });
 
   test('successful login with correct credentials', async ({ page }) => {
     // Arrange
-    const user_login = 'testerlo';
-    const user_password = '12345678';
+    const user_login = login_data.user_login;
+    const user_password = login_data.password;
     const expected_user_name = 'Jan Demobankowy';
 
     // Action
@@ -41,7 +41,7 @@ test.describe('User login to Demobank', () => {
 
   test('unsuccessful login with too short password', async ({ page }) => {
     //Arrange
-    const user_login = 'testerlo';
+    const user_login = login_data.user_login;
     const user_password = '1234567';
     const expected_error_message = 'hasło ma min. 8 znaków';
 
