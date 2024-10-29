@@ -12,7 +12,7 @@ test.describe('User login to Demobank', () => {
   test('successful login with correct credentials', async ({ page }) => {
     // Arrange
     const user_login = login_data.user_login;
-    const user_password = login_data.password;
+    const user_password = login_data.user_password;
     const expected_user_name = 'Jan Demobankowy';
 
     // Action

@@ -4,7 +4,7 @@ import { login_data } from '../test-data/login.data';
 test.describe('Payment tests', () => {
   test.beforeEach(async ({ page }) => {
     const user_login = login_data.user_login;
-    const user_password = login_data.password;
+    const user_password = login_data.user_password;
 
     await page.goto('/');
     await page.getByTestId('login-input').fill(user_login);
