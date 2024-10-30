@@ -1,5 +1,6 @@
 ﻿import { test, expect } from '@playwright/test';
 import { login_data, loginData, user_login } from '../test-data/login.data';
+import { LoginPage } from '../pages/login.page';
 
 test.describe('User login to Demobank', () => {
   // grupowanie testow
@@ -16,9 +17,10 @@ test.describe('User login to Demobank', () => {
     const expected_user_name = 'Jan Demobankowy';
 
     // Action
-    await page.getByTestId('login-input').fill(user_login);
-    await page.getByTestId('password-input').fill(user_password);
-    await page.getByTestId('login-button').click();
+    const login_page = new LoginPage(page);
+    await login_page.login_input.fill(user_login);
+    await login_page.password_input.fill(user_password);
+    await login_page.login_button.click();
 
     // Assert
     await expect(page.getByTestId('user-name')).toHaveText(expected_user_name);
