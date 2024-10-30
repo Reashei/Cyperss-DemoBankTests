@@ -12,6 +12,7 @@ export class PulpitPage {
   top_up_agreement: Locator;
   button_exec: Locator;
   money_value: Locator;
+  username_text: Locator;
 
   constructor(private page: Page) {
     this.transfer_receiver = this.page.locator('#widget_1_transfer_receiver');
@@ -27,5 +28,6 @@ export class PulpitPage {
     );
     this.button_exec = this.page.locator('#execute_phone_btn');
     this.money_value = this.page.locator('#money_value');
+    this.username_text = this.page.getByTestId('user-name');
   }
 }
