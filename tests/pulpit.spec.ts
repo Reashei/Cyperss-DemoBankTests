@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { login_data } from '../test-data/login.data';
 import { LoginPage } from '../pages/login.page';
+import { PulpitPage } from '../pages/pulpit.page';
 
 test.describe('Pulpit tests', () => {
   test.beforeEach(async ({ page }) => {
@@ -9,7 +10,6 @@ test.describe('Pulpit tests', () => {
 
     await page.goto('/');
     const login_page = new LoginPage(page);
-
     await login_page.login_input.fill(user_login);
     await login_page.password_input.fill(user_password);
     await login_page.login_button.click();
@@ -23,16 +23,17 @@ test.describe('Pulpit tests', () => {
     const expected_transfer_receiver = 'Chuck Demobankowy';
 
     // Action
-    await page.locator('#widget_1_transfer_receiver').selectOption(receiver_id);
-    await page.locator('#widget_1_transfer_amount').fill(transfer_amount);
-    await page.locator('#widget_1_transfer_title').fill(transfer_title);
+    const pulpit_page = new PulpitPage(page);
+    await pulpit_page.transfer_receiver.selectOption(receiver_id);
+    await pulpit_page.transfer_amount.fill(transfer_amount);
+    await pulpit_page.transfer_title.fill(transfer_title);
 
-    await page.getByRole('button', { name: 'wykonaj' }).click();
-    await page.getByTestId('close-button').click();
+    await pulpit_page.button_do_payment.click();
+    await pulpit_page.button_close.click();
     //await page.getByRole('link', { name: 'Przelew wykonany! Chuck' }).click();
 
     // Assert
-    await expect(page.locator('#show_messages')).toHaveText(
+    await expect(pulpit_page.show_messages).toHaveText(
       `Przelew wykonany! ${expected_transfer_receiver} - ${transfer_amount},00PLN - ${transfer_title}`,
     );
   });
@@ -43,15 +44,16 @@ test.describe('Pulpit tests', () => {
     const user_amount = '20';
 
     //Action
-    await page.locator('#widget_1_topup_receiver').selectOption(phone_option);
-    await page.locator('#widget_1_topup_amount').fill(user_amount);
-    await page.locator('#uniform-widget_1_topup_agreement span').click();
+    const pulpit_page = new PulpitPage(page);
+    await pulpit_page.top_up_receiver.selectOption(phone_option);
+    await pulpit_page.top_up_amount.fill(user_amount);
+    await pulpit_page.top_up_agreement.click();
 
-    await page.locator('#execute_phone_btn').click();
-    await page.getByTestId('close-button').click();
+    await pulpit_page.button_exec.click();
+    await pulpit_page.button_close.click();
 
     //Assert
-    await expect(page.locator('#show_messages')).toContainText(
+    await expect(pulpit_page.show_messages).toContainText(
       `Doładowanie wykonane! ${user_amount},00PLN na numer ${phone_option}`,
     );
   });
@@ -66,19 +68,16 @@ test.describe('Pulpit tests', () => {
     const expected_balance = Number(initial_balance) - Number(user_amount);
 
     //Action
-    await page.locator('#widget_1_topup_receiver').selectOption(phone_option);
-    await page.locator('#widget_1_topup_amount').fill(user_amount);
-    await page.locator('#uniform-widget_1_topup_agreement span').click();
+    const pulpit_page = new PulpitPage(page);
+    await pulpit_page.top_up_receiver.selectOption(phone_option);
+    await pulpit_page.top_up_amount.fill(user_amount);
+    await pulpit_page.top_up_agreement.click();
 
-    await page.locator('#execute_phone_btn').click();
-    await page.getByTestId('close-button').click();
+    await pulpit_page.button_exec.click();
+    await pulpit_page.button_close.click();
 
     //Assert
-    await expect(page.locator('#show_messages')).toContainText(
-      expected_message,
-    );
-    await expect(page.locator('#money_value')).toHaveText(
-      `${expected_balance}`,
-    );
+    await expect(pulpit_page.show_messages).toContainText(expected_message);
+    await expect(pulpit_page.money_value).toHaveText(`${expected_balance}`);
   });
 });
