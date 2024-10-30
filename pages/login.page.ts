@@ -1,12 +1,17 @@
-import { Page } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
 
 export class LoginPage {
-  constructor(private page: Page) {}
+  login_input: Locator;
+  password_input: Locator;
+  login_button: Locator;
+  login_error: Locator;
+  password_error: Locator;
 
-  login_input = this.page.getByTestId('login-input');
-  password_input = this.page.getByTestId('password-input');
-  login_button = this.page.getByTestId('login-button');
-
-  //   await page.getByTestId('password-input').fill(user_password);
-  //   await page.getByTestId('login-button').click();
+  constructor(private page: Page) {
+    this.login_input = this.page.getByTestId('login-input');
+    this.password_input = this.page.getByTestId('password-input');
+    this.login_button = this.page.getByTestId('login-button');
+    this.login_error = this.page.getByTestId('error-login-id');
+    this.password_error = this.page.getByTestId('error-login-password');
+  }
 }

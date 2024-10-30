@@ -28,33 +28,31 @@ test.describe('User login to Demobank', () => {
 
   test('unsuccessful login with too short username', async ({ page }) => {
     //Arrange
-    const user_login = 'tester';
+    const incorrect_user_login = 'tester';
     const expected_error_message = 'identyfikator ma min. 8 znaków';
 
     //Act
-    await page.getByTestId('login-input').fill(user_login);
-    await page.getByTestId('password-input').click();
+    const login_page = new LoginPage(page);
+    await login_page.login_input.fill(incorrect_user_login);
+    await login_page.password_input.click();
 
     //Assert
-    await expect(page.getByTestId('error-login-id')).toHaveText(
-      expected_error_message,
-    );
+    await expect(login_page.login_error).toHaveText(expected_error_message);
   });
 
   test('unsuccessful login with too short password', async ({ page }) => {
     //Arrange
     const user_login = login_data.user_login;
-    const user_password = '1234567';
+    const incorrect_user_password = '1234567';
     const expected_error_message = 'hasło ma min. 8 znaków';
 
     //Act
-    await page.getByTestId('login-input').fill(user_login);
-    await page.getByTestId('password-input').fill(user_password);
-    await page.getByTestId('password-input').blur(); // blur sprawia ze wychodzimi z okienka (gubimy focus), akurat tutaj, aby wyswietli feedback z passwordem ze jest za krotkie
+    const login_page = new LoginPage(page);
+    await login_page.login_input.fill(user_login);
+    await login_page.password_input.fill(incorrect_user_password);
+    await login_page.password_input.blur(); // blur sprawia ze wychodzimi z okienka (gubimy focus), akurat tutaj, aby wyswietli feedback z passwordem ze jest za krotkie
 
     //Assert
-    await expect(page.getByTestId('error-login-password')).toHaveText(
-      expected_error_message,
-    );
+    await expect(login_page.password_error).toHaveText(expected_error_message);
   });
 });
