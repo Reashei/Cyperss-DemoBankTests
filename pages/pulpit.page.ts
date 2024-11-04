@@ -35,4 +35,22 @@ export class PulpitPage {
     this.username_text = this.page.getByTestId('user-name');
     this.side_menu_component = new SideMenuComponent(this.page);
   }
+  async top_up_phone(phone_option: string, user_amount: string): Promise<void> {
+    await this.top_up_receiver.selectOption(phone_option);
+    await this.top_up_amount.fill(user_amount);
+    await this.top_up_agreement.click();
+    await this.button_exec.click();
+    await this.button_close.click();
+  }
+  async success_quick_payment(
+    receiver_id: string,
+    transfer_amount: string,
+    transfer_title: string,
+  ): Promise<void> {
+    await this.transfer_receiver.selectOption(receiver_id);
+    await this.transfer_amount.fill(transfer_amount);
+    await this.transfer_title.fill(transfer_title);
+    await this.button_do_payment.click();
+    await this.button_close.click();
+  }
 }

@@ -25,13 +25,11 @@ test.describe('Pulpit tests', () => {
     const expected_transfer_receiver = 'Chuck Demobankowy';
 
     // Action
-    await pulpit_page.transfer_receiver.selectOption(receiver_id);
-    await pulpit_page.transfer_amount.fill(transfer_amount);
-    await pulpit_page.transfer_title.fill(transfer_title);
-
-    await pulpit_page.button_do_payment.click();
-    await pulpit_page.button_close.click();
-    //await page.getByRole('link', { name: 'Przelew wykonany! Chuck' }).click();
+    await pulpit_page.success_quick_payment(
+      receiver_id,
+      transfer_amount,
+      transfer_title,
+    );
 
     // Assert
     await expect(pulpit_page.show_messages).toHaveText(
@@ -45,19 +43,13 @@ test.describe('Pulpit tests', () => {
     const user_amount = '20';
 
     //Action
-    await pulpit_page.top_up_receiver.selectOption(phone_option);
-    await pulpit_page.top_up_amount.fill(user_amount);
-    await pulpit_page.top_up_agreement.click();
-
-    await pulpit_page.button_exec.click();
-    await pulpit_page.button_close.click();
+    await pulpit_page.top_up_phone(phone_option, user_amount);
 
     //Assert
     await expect(pulpit_page.show_messages).toContainText(
       `Doładowanie wykonane! ${user_amount},00PLN na numer ${phone_option}`,
     );
   });
-  //await expect(page.getByText('Do�adowanie wykonane', { exact: true })).toHaveText('Do�adowanie wykonane');
 
   test('correct balance after successful mobile top-up', async ({ page }) => {
     //Arrange
@@ -68,12 +60,7 @@ test.describe('Pulpit tests', () => {
     const expected_balance = Number(initial_balance) - Number(user_amount);
 
     //Action
-    await pulpit_page.top_up_receiver.selectOption(phone_option);
-    await pulpit_page.top_up_amount.fill(user_amount);
-    await pulpit_page.top_up_agreement.click();
-
-    await pulpit_page.button_exec.click();
-    await pulpit_page.button_close.click();
+    await pulpit_page.top_up_phone(phone_option, user_amount);
 
     //Assert
     await expect(pulpit_page.show_messages).toContainText(expected_message);

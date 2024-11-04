@@ -28,11 +28,11 @@ test.describe('Payment tests', () => {
 
     //Act
     payment_page = new PaymentPage(page);
-    await payment_page.transfer_receiver.fill(transfer_receiver);
-    await payment_page.form_account_to.fill(transfer_account);
-    await payment_page.form_amount.fill(transfer_amount);
-    await payment_page.button_do_payment.click();
-    await payment_page.button_close.click();
+    await payment_page.make_transfer(
+      transfer_receiver,
+      transfer_account,
+      transfer_amount,
+    );
 
     //Assert
     await expect(payment_page.show_messages).toHaveText(expected_message);
