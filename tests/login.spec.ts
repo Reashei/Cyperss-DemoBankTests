@@ -1,5 +1,5 @@
 ﻿import { test, expect } from '@playwright/test';
-import { login_data, loginData, user_login } from '../test-data/login.data';
+import { login_data } from '../test-data/login.data';
 import { LoginPage } from '../pages/login.page';
 import { PulpitPage } from '../pages/pulpit.page';
 

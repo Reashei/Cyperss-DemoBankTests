@@ -1,4 +1,5 @@
 import { Locator, Page } from '@playwright/test';
+import { SideMenuComponent } from '../components/side-menu.component';
 
 export class PulpitPage {
   transfer_receiver: Locator;
@@ -13,8 +14,11 @@ export class PulpitPage {
   button_exec: Locator;
   money_value: Locator;
   username_text: Locator;
+  payment_button: Locator;
+  side_menu_component: SideMenuComponent;
 
   constructor(private page: Page) {
+    this.payment_button = this.page.getByRole('link', { name: 'płatności' });
     this.transfer_receiver = this.page.locator('#widget_1_transfer_receiver');
     this.transfer_amount = this.page.locator('#widget_1_transfer_amount');
     this.transfer_title = this.page.locator('#widget_1_transfer_title');
@@ -29,5 +33,6 @@ export class PulpitPage {
     this.button_exec = this.page.locator('#execute_phone_btn');
     this.money_value = this.page.locator('#money_value');
     this.username_text = this.page.getByTestId('user-name');
+    this.side_menu_component = new SideMenuComponent(this.page);
   }
 }
